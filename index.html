@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>rem to rpx rem转换rpx工具</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    1 rem = <input type="text" placeholder="40" /> px
+    <div>
+        <textarea class='csstext' placeholder='your css...'></textarea>
+        <textarea class='result' placeholder='result...'></textarea>
+    </div>
+    <style>
+        textarea {
+            width: 45%;
+            height: 500px;
+        }
+    </style>
+    <script>
+        var basePxSize = 40;
+        var findPX = new RegExp('[^ ]+(?=rem)', 'g');
+
+        var last = new RegExp('(\\d$)', '');
+
+        $('.csstext').bind('input propertychange', function() {
+            var css = $('textarea').val();
+            var result;
+            while ((result = findPX.exec(css)) !== null) {
+
+                var value = result[0];
+                var res = Math.round(value * 1000) / 1000
+
+                if (value.indexOf('.') == 0) {
+                    res = (res + "").replace('0.', '.');
+                }
+                // console.log(res)
+                var em = res * basePxSize;
+                css = css.replace(res + 'rem', em + 'rpx');
+            }
+            $('.result').val(css);
+        });
+    </script>
+</body>
+</html>
